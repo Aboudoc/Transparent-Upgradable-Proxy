@@ -271,21 +271,38 @@ The basic idea for the code inside `assembly` is that we're gonna be copying the
 Let's see in details what the code inside `assembly` does
 
 ```js
-calldatacopy(0, 0, calldatasize())
+calldatacopy(t, f, s)
 ```
 
-`calldatacopy` copy the calldata at memory 0, starting from the calldata from 0 to `calldatasize`.
+`calldatacopy` copy the calldata at memory 0 (`t`) starting from the calldata from 0 (`f`) to `calldatasize`
+
+```js
+calldatacopy(0, 0, calldatasize())
+```
 
 Basically we're copying all of the calldata ounto memory at 0th position
 
 ```js
-calldatacopy(t, f, s)
+
+delegatecall(g, a, in, insize, out, outsize)
+
 ```
+
+`g` means we are forwarding all of the gas
+`a` is the address of the implementation to execut `delegatecall` on
+`in` and `insize` means the data is stored inside the memory from 0 to datasize.
+`out`and `outside` says to store the result of `delegatecall` to memory from out, to output size. But since we don't know the size of the output before delegating, we are simply ignoring the output, saying 0 and 0.
 
 ```js
 
 let result := delegatecall(gas(), implementation, 0, calldatasize(), 0, 0)
 
+```
+
+We were ignoring the output, next we will handle it
+
+```js
+returndatacopy(t, f, s)
 ```
 
 ## Storage for implementation and admin
