@@ -389,8 +389,8 @@ To do this, we will use `assembly`
 ```js
 
 assembly {
-            r.slot := slot
-        }
+    r.slot := slot
+}
 
 ```
 
