@@ -311,7 +311,7 @@ returndatacopy(t, f, s)
 returndatacopy(0, 0, returndatasize())
 ```
 
-Basically we're copying the data that was returned to memory 0 (`t`) starting at the 0th position (`f`) of the memory, and the size of the data to copy is stored in the `returndatasize` (returndatasize() returns the size of the last returndata )
+Basically we're copying the data that was returned to memory 0 (`t`) starting at the 0th position (`f`) of the memory, and the size of the data to copy is stored in the `returndatasize` (returndatasize() returns the size of the last returndata)
 
 The last step is to handle wether the `delegatecall` was successfull or not
 
@@ -392,6 +392,20 @@ assembly {
     r.slot := slot
 }
 
+```
+
+We can use `StorageSlot` library to get an address stored at any slot
+
+```js
+StorageSlot.getAddressSlot(SLOT).value
+```
+
+This will return a pointer that is storing `SLOT` address struct
+
+We can use `StorageSlot` library to store an address to any slot
+
+```js
+StorageSlot.getAddressSlot(SLOT).value = _addr
 ```
 
 Basically it says to get the storage pointer at the slot from the input
