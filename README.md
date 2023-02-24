@@ -195,9 +195,13 @@ contract CounterV2 {
 
 ## Return data from fallback
 
-`fallback` function and `receive`function both calls an internal function called `_delegate`.
+We can increment the count using `inc` function, but if you try to get the count, it will return 0
 
-We'll be modifying this function.
+`fallback` function and `receive`function both calls an internal function called `_delegate`
+
+We'll be modifying this function to call `delegatecall` but after it will return the data even though the function signature does say that it return any data.
+
+This will allow us to get the count from the implementation
 
 **To return data, we'll need to use `assembly`**
 
@@ -232,7 +236,9 @@ We'll be modifying this function.
 
 This code comes from the following [repo from Open Zeppelin](https://github.com/OpenZeppelin/upgrades-safe-app/blob/master/contracts/Proxy.sol)
 
-Notes that **only local variables are supported**, so we pass in the storage variable `_implementation` as argument:
+Notes that if you compile you'll get the following error : **only local variables are supported**
+
+so we pass in the storage variable `_implementation` as argument:
 
 ```js
 
@@ -248,7 +254,7 @@ let result := delegatecall(gas(), _implementation, 0, calldatasize(), 0, 0)
 
 ```
 
-Finally, pass the state variable to `fallback` and `receive`:
+Finally, pass in the state variable to `fallback` and `receive`:
 
 ```js
     fallback() external payable {
@@ -260,14 +266,26 @@ Finally, pass the state variable to `fallback` and `receive`:
     }
 ```
 
-The basic idea for the code inside `assembly` is that we're gonna be copying `data`, then manually `delegatecall`, and once we call `delegatecall`, we have our data stored in returned data. We copy this return data (...) tjen manually return it.
+The basic idea for the code inside `assembly` is that we're gonna be copying the `data`, then manually `delegatecall`, and once we call `delegatecall`, we have our data stored in returned data. We'll copy this returned data into memory, then manually return it.
 
-Let's see in details what the code inside `assembly` does.
+Let's see in details what the code inside `assembly` does
 
-`calldata` copy the data at memory 0, starting from the calldata from 0 to `calldatasize`. Basically we're copying all of the calldata ounto memory at 0th position
+```js
+calldatacopy(0, 0, calldatasize())
+```
+
+`calldatacopy` copy the calldata at memory 0, starting from the calldata from 0 to `calldatasize`.
+
+Basically we're copying all of the calldata ounto memory at 0th position
 
 ```js
 calldatacopy(t, f, s)
+```
+
+```js
+
+let result := delegatecall(gas(), implementation, 0, calldatasize(), 0, 0)
+
 ```
 
 ## Storage for implementation and admin
