@@ -440,11 +440,11 @@ In the modifier, if `msg.sender` is not admin, we'll forward the request to `fal
 ```js
 
 modifier ifAdmin() {
-        if (msg.sender == _getAdmin()) {
-            _;
-        } else {
-            _fallback();
-        }
+    if (msg.sender == _getAdmin()) {
+        _;
+    } else {
+        _fallback();
+    }
 }
 
 ```
@@ -453,7 +453,7 @@ Notice that `fallback` function is `external`, so we can not call it directly, i
 
 ```js
 function _fallback() private {
-        _delegate(_getImplementation());
+    _delegate(_getImplementation());
 }
 
 ```
