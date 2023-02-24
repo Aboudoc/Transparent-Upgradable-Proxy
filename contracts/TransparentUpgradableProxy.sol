@@ -84,6 +84,28 @@ contract TransparentUpgradeableProxy {
     }
 }
 
+contract ProxyAdmin {
+    address public owner;
+
+    constructor() {
+        owner = msg.sender;
+    }
+
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Not authorised");
+        _;
+    }
+
+    function changeProxyAdmin(address payable proxy, address _admin) external onlyOwner {
+        TransparentUpgradeableProxy(proxy).changeAdmin(_admin);
+    }
+
+    function upgrade(address payable proxy, address _implementation) external onlyOwner {
+        TransparentUpgradeableProxy(proxy).upgradeTo(_implementation);
+    }
+    //1200
+}
+
 library StorageSlot {
     struct AddressSlot {
         address value;

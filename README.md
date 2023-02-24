@@ -472,6 +472,25 @@ Add modifier also for `admin()` function so we can keep it public
 
 ## Proxy admin contract
 
+Finally, we'll write a `ProxyAdmin` contract, and this contract will be the admin of the `Proxy` contract
+
+The problem is that since the `admin()` and the `implementation()` also exist inside the `Proxy` contract, if the admin wants to call one of these function inside the `implementation` contract, we wouldn't be able to call it
+
+So 1st thing that we need into the `Proxy` contract is to set the admin of the contract
+
+```js
+
+
+function changeAdmin(address _admin) external ifAdmin {
+    _setAdmin(_admin);
+}
+
+```
+
+Now we'll write the `ProxyAdmin` contract, and when we deploy both, the `Proxy` contract and the `ProxyAdmin` contract, we'll call `changeAdmin()` passing in the address of the `ProxyAdmin` contract
+
+**Note that inside of `changeProxyAdmin`, proxy address passed in as argument is marqued as `payable` because the `Proxy` contract has a `fallback` and a `receive`**
+
 ### Further reading
 
 (...soon)
@@ -567,6 +586,10 @@ Project Link: [https://github.com/Aboudoc/Transparent-Upgradable-Proxy-assembly.
 [Bootstrap-url]: https://getbootstrap.com
 [JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
 [JQuery-url]: https://jquery.com
+
+```
+
+```
 
 ```
 
