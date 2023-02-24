@@ -103,7 +103,22 @@ contract ProxyAdmin {
     function upgrade(address payable proxy, address _implementation) external onlyOwner {
         TransparentUpgradeableProxy(proxy).upgradeTo(_implementation);
     }
-    //1200
+
+    function getProxyAdmin(address proxy) external view returns (address) {
+        (bool ok, bytes memory res) = proxy.staticcall(
+            abi.encodeCall(TransparentUpgradeableProxy.admin, ())
+        );
+        require(ok, "call failed");
+        return abi.decode(res, (address));
+    }
+
+    function getProxyImplementation(address proxy) external view returns (address) {
+        (bool ok, bytes memory res) = proxy.staticcall(
+            abi.encodeCall(TransparentUpgradeableProxy.implementation, ())
+        );
+        require(ok, "call failed");
+        return abi.decode(res, (address));
+    }
 }
 
 library StorageSlot {
