@@ -305,7 +305,7 @@ We were ignoring the output, next we will handle it by copying the output (data 
 returndatacopy(t, f, s)
 ```
 
-`returdatacopy` copies `s`bytes from returndata at position `f` to memory at position `t`
+`returndatacopy` copies `s` bytes from returndata at position `f` to memory at position `t`
 
 ```js
 returndatacopy(0, 0, returndatasize())
