@@ -427,6 +427,12 @@ Then, write public functions to get the admin, and get the implementation: `admi
 
 ## Separate user / admin interfaces
 
+If the caller is an admin, then we'll let him execute some function on the proxy contract, otherwise, if the caller is a user, we'll forward all of the calls to the implementation
+
+Notice that we have some `public` functions in our `Proxy` contract (`IMPLEMENTATION_SLOT`, `ADMIN_SLOT`, `upgradeTo` and `admin` and `implementation`)
+
+The problem is if we were to had these function also inside the implementation contract, then even though we might want to call the function inside the implementation contract, these functions inside the Proxy contract will always be executed (even if it's not the same function, as long as the function selectors are the same)
+
 ## Proxy admin contract
 
 ### Further reading
