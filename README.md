@@ -193,7 +193,7 @@ contract CounterV2 {
 1.  All of the `implementation` contract must have the same storage layout as the `proxy` contract
 2.  The `fallback`can not return any data, so we can not get the count of the counter.
 
-## Return data from fallback
+## Return data from `fallback`
 
 We can increment the count using `inc` function, but if you try to get the count, it will return 0
 
