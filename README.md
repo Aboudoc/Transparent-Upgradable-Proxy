@@ -499,6 +499,12 @@ function changeProxyAdmin(address payable proxy, address _admin) external onlyOw
 
 **Note2** We wrote read-only function to read the address of the implementation and the address of the admin because in `Proxy` contract `admin()` and `implementation()` are not read-only functions. We had to remore the `view` declaration since we have a `ifAdmin` modifier which have the potential to call the `fallback`
 
+The way we'll call a function that is not read-only: `staticcall` to make it read-only function
+
+`staticcall` is like `call` except that it does not write anything into the blockchain. Note that we're passing-in empty parenthesis inside `abi.encodeCall` because there is no input to pass-in inside the function `admin()`
+
+Finally, we know that when call the `admin()` it will return an address, so we `abi.decode` the response into address
+
 ```js
     function getProxyAdmin(address proxy) external view returns (address) {
 
@@ -510,6 +516,8 @@ function changeProxyAdmin(address payable proxy, address _admin) external onlyOw
         return abi.decode(res, (address));
     }
 ```
+
+We did something similar to get the address of the implementation inside `getProxyImplementation()`
 
 ### Further reading
 
