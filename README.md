@@ -410,6 +410,15 @@ StorageSlot.getAddressSlot(SLOT).value = _addr
 
 Basically it says to get the storage pointer at the slot from the input
 
+By using StorageSlot library, our proxy is not "Buggy" anymore. We'll be following the Open Zeppelin Transparent Upgradable Proxy contract, so we store it in a special plce
+
+```js
+bytes32 private constant IMPLEMENTATION_SLOT =
+        bytes32(uint256(keccak256("eip1967.proxy.implementation")) - 1);
+```
+
+We're substracting 1 by casting the hash into uint to make some king of **Hash Collision Attack** difficult to pull off because we don't know the pre-image of the hash
+
 ## Separate user / admin interfaces
 
 ## Proxy admin contract
