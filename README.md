@@ -260,6 +260,16 @@ Finally, pass the state variable to `fallback` and `receive`:
     }
 ```
 
+The basic idea for the code inside `assembly` is that we're gonna be copying `data`, then manually `delegatecall`, and once we call `delegatecall`, we have our data stored in returned data. We copy this return data (...) tjen manually return it.
+
+Let's see in details what the code inside `assembly` does.
+
+`calldata` copy the data at memory 0, starting from the calldata from 0 to `calldatasize`. Basically we're copying all of the calldata ounto memory at 0th position
+
+```js
+calldatacopy(t, f, s)
+```
+
 ## Storage for implementation and admin
 
 ## Separate user / admin interfaces
