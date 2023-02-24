@@ -433,6 +433,43 @@ Notice that we have some `public` functions in our `Proxy` contract (`IMPLEMENTA
 
 The problem is if we were to had these function also inside the implementation contract, then even though we might want to call the function inside the implementation contract, these functions inside the Proxy contract will always be executed (even if it's not the same function, as long as the function selectors are the same)
 
+Inside the Proxy contract, we'll make all the public functions private, but we'll keep `upgradeTo` public since since we need, so we keep it `external` and create `isAdmin` modifier using `_getAdmin` internal function. Remember, admin is no longer a state variable, it's stored in the admin slot
+
+In the modifier, if `msg.sender` is not admin, we'll forward the request to `fallback`
+
+```js
+
+modifier ifAdmin() {
+        if (msg.sender == _getAdmin()) {
+            _;
+        } else {
+            _fallback();
+        }
+    }
+
+```
+
+Notice that `fallback` function is `external`, so we can not call it directly, instead we use an intenal function named `_fallback`
+
+```js
+function _fallback() private {
+        _delegate(_getImplementation());
+    }
+
+```
+
+We also use this internal function inside `fallback` and `receive`
+
+Then, we expose `upgradeTo()` only if msg.sender is admin
+
+```js
+function upgradeTo(address _implementation) external ifAdmin {
+    _setImplementation(_implementation);
+}
+```
+
+Add modifier also for `admin()` function so we can keep it public
+
 ## Proxy admin contract
 
 ### Further reading
