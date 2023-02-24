@@ -423,6 +423,8 @@ We're substracting 1 by casting the hash into `uint` to make some king of **Hash
 
 We'll need a `getter` and a `setter` for these! (check code from line 34 to 50) and use these in `constructor()`, `fallback()`, `receive()` and `upgradeTo()`
 
+Then, write public functions to get the admin, and get the implementation: `admin()` using `_getAdmin()` and `implementation()` using `_getImplementation`
+
 ## Separate user / admin interfaces
 
 ## Proxy admin contract
