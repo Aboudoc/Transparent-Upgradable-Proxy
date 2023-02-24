@@ -358,7 +358,7 @@ contract CounterV2 {
 }
 ```
 
-Now we need to write to any storage slot. We'll do it by creating a library `storageSlot`:
+Now we need to write to any storage slot. We'll do it by creating a library `StorageSlot`:
 
 ```js
 
@@ -410,14 +410,18 @@ StorageSlot.getAddressSlot(SLOT).value = _addr
 
 Basically it says to get the storage pointer at the slot from the input
 
-By using StorageSlot library, our proxy is not "Buggy" anymore. We'll be following the Open Zeppelin Transparent Upgradable Proxy contract, so we store it in a special plce
+By using `StorageSlot` library, our proxy is not "Buggy" anymore. We'll be following the Open Zeppelin Transparent Upgradable Proxy contract, so we store implementation and admin in a special place
 
 ```js
 bytes32 private constant IMPLEMENTATION_SLOT =
         bytes32(uint256(keccak256("eip1967.proxy.implementation")) - 1);
+
+bytes32 private constant ADMIN_SLOT = bytes32(uint256(keccak256("eip1967.proxy.admin")) - 1);
 ```
 
-We're substracting 1 by casting the hash into uint to make some king of **Hash Collision Attack** difficult to pull off because we don't know the pre-image of the hash
+We're substracting 1 by casting the hash into `uint` to make some king of **Hash Collision Attack** difficult to pull off because we don't know the pre-image of the hash
+
+We'll need a `getter` and a `setter` for these! (check code from line 34 to 50)
 
 ## Separate user / admin interfaces
 
