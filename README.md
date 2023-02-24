@@ -454,7 +454,7 @@ Notice that `fallback` function is `external`, so we can not call it directly, i
 ```js
 function _fallback() private {
         _delegate(_getImplementation());
-    }
+}
 
 ```
 
