@@ -445,7 +445,7 @@ modifier ifAdmin() {
         } else {
             _fallback();
         }
-    }
+}
 
 ```
 
