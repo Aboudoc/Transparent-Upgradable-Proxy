@@ -299,11 +299,37 @@ let result := delegatecall(gas(), implementation, 0, calldatasize(), 0, 0)
 
 ```
 
-We were ignoring the output, next we will handle it
+We were ignoring the output, next we will handle it by copying the output (data returned)
 
 ```js
 returndatacopy(t, f, s)
 ```
+
+`returdatacopy` copies `s`bytes from returndata at position `f` to memory at position `t`
+
+```js
+returndatacopy(0, 0, returndatasize())
+```
+
+Basically we're copying the data that was returned to memory 0 (`t`) starting at the 0th position (`f`) of the memory, and the size of the data to copy is stored in the `returndatasize` (returndatasize() returns the size of the last returndata )
+
+The last step is to handle wether the `delegatecall` was successfull or not
+
+```js
+
+switch result
+            case 0 {
+                revert(0, returndatasize())
+            }
+            default {
+                return(0, returndatasize())
+            }
+
+```
+
+If the `result` is 0, this mean there was an error, so we will revert and return the all of the output that was returned from `delegatecall`, from 0 to `returndatasize`
+
+If the result is not equal to 0, we return the data stored in memory (that was copied using `returndatacopy`) from 0 to `returndatasize`
 
 ## Storage for implementation and admin
 
