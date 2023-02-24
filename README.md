@@ -421,7 +421,7 @@ bytes32 private constant ADMIN_SLOT = bytes32(uint256(keccak256("eip1967.proxy.a
 
 We're substracting 1 by casting the hash into `uint` to make some king of **Hash Collision Attack** difficult to pull off because we don't know the pre-image of the hash
 
-We'll need a `getter` and a `setter` for these! (check code from line 34 to 50)
+We'll need a `getter` and a `setter` for these! (check code from line 34 to 50) and use these in `constructor()`, `fallback()`, `receive()` and `upgradeTo()`
 
 ## Separate user / admin interfaces
 
