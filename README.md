@@ -333,6 +333,69 @@ If the result is not equal to 0, we return the data stored in memory (that was c
 
 ## Storage for implementation and admin
 
+Our goal is to store the address of the implementation and admin somewhere else, besides the 0th and the 1st slot
+
+First of all, remove the address of the implementation and the admin from `CounterV1` and `CounterV2``
+
+```js
+contract CounterV1 {
+    uint public count;
+
+    function inc() external {
+        count += 1;
+    }
+}
+contract CounterV2 {
+    uint public count;
+
+    function inc() external {
+        count += 1;
+    }
+
+    function dec() external {
+        count -= 1;
+    }
+}
+```
+
+Now we need to write to any storage slot. We'll do it by creating a library `storageSlot`:
+
+```js
+
+library StorageSlot {
+    struct AddressSlot {
+        address value;
+    }
+
+    function getAddressSlot(bytes32 slot) internal pure returns (AddressSlot storage r) {
+        assembly {
+            r.slot := slot
+        }
+    }
+}
+
+```
+
+Keep in mind that the storage of a solidity smart contract is an array of length `2^256`, and to each slot we can store up to 32 bytes
+
+To use this trick we can not simply pass in an address, we'll need to wrap our address in a `struct`
+
+Next, we write a `function` to get the pointer of the storage, taking a single input that will specify the pointer that we want to get (in `bytes32`). This function will return the pointer to the address slot
+
+Basically, this function will return the pointer to the storage r, located at slot from the input
+
+To do this, we will use `assembly`
+
+```js
+
+assembly {
+            r.slot := slot
+        }
+
+```
+
+Basically it says to get the storage pointer at the slot from the input
+
 ## Separate user / admin interfaces
 
 ## Proxy admin contract
@@ -432,3 +495,7 @@ Project Link: [https://github.com/Aboudoc/Transparent-Upgradable-Proxy-assembly.
 [Bootstrap-url]: https://getbootstrap.com
 [JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
 [JQuery-url]: https://jquery.com
+
+```
+
+```
