@@ -128,7 +128,7 @@ To get a local copy up and running follow these simple example steps.
 
 ## Intro: the wrong way to implement proxy
 
-Let's consider the following proxy contract with two separate implementations: CounterV1 and CounterV2:
+Let's consider the following upgradable contract with two separate implementations: CounterV1 and CounterV2:
 
 <div>
  <img src="images/proxy1.png" alt="Maths">
@@ -138,14 +138,39 @@ Let's consider the following proxy contract with two separate implementations: C
  <img src="images/proxy2.png" alt="Maths">
  </div>
 
-Two problems to fix:
+**Two problems to fix:**
 
 1.  All of the `implementation` contract must have the same storage layout as the `proxy` contract
 2.  The `fallback`can not return any data, so we can not get the count of the counter.
 
 ## Return data from fallback
 
-assembly (coming soon...)
+`fallback` function and `receive`function both calls an internal function called `_delegate`.
+
+We'll be modifying this function.
+
+**To return data, we'll need to use `assembly`**
+
+```js
+function _delegate(address _implementation) internal {
+        assembly {
+
+            calldatacopy(0, 0, calldatasize())
+
+            let result := delegatecall(gas(), _implementation, 0, calldatasize(), 0, 0)
+
+            returndatacopy(0, 0, returndatasize())
+
+            switch result
+            case 0 {
+                revert(0, returndatasize())
+            }
+            default {
+                return(0, returndatasize())
+            }
+        }
+    }
+```
 
 ## Storage for implementation and admin
 
