@@ -499,6 +499,18 @@ function changeProxyAdmin(address payable proxy, address _admin) external onlyOw
 
 **Note2** We wrote read-only function to read the address of the implementation and the address of the admin because in `Proxy` contract `admin()` and `implementation()` are not read-only functions. We had to remore the `view` declaration since we have a `ifAdmin` modifier which have the potential to call the `fallback`
 
+```js
+    function getProxyAdmin(address proxy) external view returns (address) {
+
+        (bool ok, bytes memory res) = proxy.staticcall(
+            abi.encodeCall(TransparentUpgradeableProxy.admin, ())
+        );
+        require(ok, "call failed");
+
+        return abi.decode(res, (address));
+    }
+```
+
 ### Further reading
 
 (...soon)
@@ -594,11 +606,3 @@ Project Link: [https://github.com/Aboudoc/Transparent-Upgradable-Proxy-assembly.
 [Bootstrap-url]: https://getbootstrap.com
 [JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
 [JQuery-url]: https://jquery.com
-
-```
-
-```
-
-```
-
-```
