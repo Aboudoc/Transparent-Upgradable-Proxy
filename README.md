@@ -130,13 +130,63 @@ To get a local copy up and running follow these simple example steps.
 
 Let's consider the following upgradable contract with two separate implementations: CounterV1 and CounterV2:
 
-<div>
- <img src="images/proxy1.png" alt="Maths">
- </div>
+```js
 
- <div>
- <img src="images/proxy2.png" alt="Maths">
- </div>
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.17;
+
+contract BuggyProxy {
+    address public  implementation;
+    address public admin;
+
+    constructor() {
+        admin = msg.sender;
+    }
+
+    function _delegate() private  {
+        (bool ok, bytes memory res) = implementation.delegatecall(msg.data);
+        require(ok);
+    }
+
+    receive() external payable{
+        _delegate();
+    }
+
+    fallback() external payable {
+        _delegate();
+    }
+
+    function upgradeTo(address _implementation) external {
+        require(msg.sender == admin);
+        implementation = _implementation;
+    }
+}
+
+contract CounterV1 {
+    address public implementation;
+    address public admin;
+    uint public count;
+
+    function inc() external {
+        count += 1;
+    }
+}
+
+contract CounterV2 {
+    address public implementation;
+    address public admin;
+    uint public count;
+
+    function inc() external {
+        count += 1;
+    }
+
+    function dec() external {
+        count -= 1;
+    }
+}
+
+```
 
 **Two problems to fix:**
 
