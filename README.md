@@ -487,9 +487,15 @@ function changeAdmin(address _admin) external ifAdmin {
 
 ```
 
-Now we'll write the `ProxyAdmin` contract, and when we deploy both, the `Proxy` contract and the `ProxyAdmin` contract, we'll call `changeAdmin()` passing in the address of the `ProxyAdmin` contract
+Now we'll write the `ProxyAdmin` contract, and when we deploy both, the `Proxy` contract and the `ProxyAdmin` contract, we'll call `changeAdmin()` passing-in the address of the `ProxyAdmin` contract
 
 **Note1** Inside of `changeProxyAdmin`, proxy address passed in as argument is marqued as `payable` because the `Proxy` contract has a `fallback` and a `receive`
+
+```js
+function changeProxyAdmin(address payable proxy, address _admin) external onlyOwner {
+    TransparentUpgradeableProxy(proxy).changeAdmin(_admin);
+}
+```
 
 **Note2** We wrote read-only function to read the address of the implementation and the address of the admin because in `Proxy` contract `admin()` and `implementation()` are not read-only functions. We had to remore the `view` declaration since we have a `ifAdmin` modifier which have the potential to call the `fallback`
 
