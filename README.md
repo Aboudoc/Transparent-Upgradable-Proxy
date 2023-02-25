@@ -120,6 +120,14 @@ To get a local copy up and running follow these simple example steps.
 
 ## Transparent Uppgradable Proxy
 
+This project is focusing on `assembly`
+
+Check [this repository](https://github.com/Aboudoc/Transparent-Proxy-Pattern-OpenZeppelin) to learn how to upgrade using `hardhat-deploy` following the Transparent Upgradable Proxy pattern from Open Zeppelin. In this repo, we build our own library
+
+[This repository](https://github.com/Aboudoc/AU-storage-slot) to learn how to write to storage, read storage using StorageSlot library from Open Zeppelin
+
+To build our upgradable proxy, we'll try to follow these steps
+
 1. Intro: the wrong way to implement proxy
 2. Return data from fallback
 3. Storage for implementation and admin
