@@ -542,8 +542,6 @@ We did something similar to get the address of the implementation inside `getPro
 ## Roadmap
 
 -   [ ] Further reading
--   [ ] Deploy script
--   [ ] Unit test
 
 See the [open issues](https://github.com/Aboudoc/Transparent-Upgradable-Proxy-assembly.git/issues) for a full list of proposed features (and known issues).
 
@@ -589,7 +587,6 @@ Project Link: [https://github.com/Aboudoc/Transparent-Upgradable-Proxy-assembly.
 ## Acknowledgments
 
 -   [Smart Contract Engineer](https://www.smartcontract.engineer/)
--   [Patrick Collins](https://github.com/PatrickAlphaC)
 -   [Open Zeppelin](https://github.com/OpenZeppelin)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
