@@ -124,7 +124,7 @@ This project is focusing on `assembly`
 
 -   Check [this repository](https://github.com/Aboudoc/Transparent-Proxy-Pattern-OpenZeppelin) to learn how to upgrade using `hardhat-deploy` following the Transparent Upgradable Proxy pattern from Open Zeppelin
 
--   Check [this repository](https://github.com/Aboudoc/AU-storage-slot) to learn how to write to any storage slot, read any slot using StorageSlot library from Open Zeppelin
+-   Check [this repository](https://github.com/Aboudoc/AU-storage-slot) to learn how to `write` to any storage slot, `read` any slot using StorageSlot library from Open Zeppelin
 
 -   You can find some proxy `vulnerabilities` in [this repository](https://github.com/Aboudoc/Proxy-exploit/tree/main/contracts). The first exploit is `Wallet Hijack` and the second one is `Misaligned Storage`
 
